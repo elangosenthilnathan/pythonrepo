@@ -1,0 +1,23 @@
+---
+name: Qwiet secrets v2 test
+
+on:
+  push:
+
+jobs:
+  Qwiet-Static-Analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download ShiftLeft CLI
+      run: |
+        curl https://cdn.shiftleft.io/download/sl > ./sl && chmod a+rx ./sl 
+
+    - name: Run sl analyze
+      shell: bash
+      run: |
+        ./sl analyze --app secretsv2test --verbose .
+      env:
+        SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
